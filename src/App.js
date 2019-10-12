@@ -1,26 +1,32 @@
 import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import Map from './components/Map'
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+
+export default class App extends React.Component {
+  constructor(props) {
+    super(props)
+    this.state={
+      longitude: -79.0558, 
+      latitude: 35.9132
+    }
+  }
+
+  getCoords = (position) => {
+    this.setState({
+      latitude: position.coords.latitude,
+      longitude: position.coords.longitude
+    })
+  }
+
+  render() {
+    navigator.geolocation.getCurrentPosition(this.getCoords)
+    return (
+      <>  
+        <Map longitude={this.state.longitude} 
+             latitude={this.state.latitude}>
+        </Map>
+      </>
+    )
+  }
 }
 
-export default App;
