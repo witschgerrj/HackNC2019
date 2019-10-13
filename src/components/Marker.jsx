@@ -12,6 +12,7 @@ const Point = styled.div`
   height: 75px;
   width: 75px;
   max-width: 75px;
+  z-index: 5;
 `
 
 export default class Marker extends React.Component {
@@ -21,28 +22,28 @@ export default class Marker extends React.Component {
     .setLngLat([this.props.long, this.props.lat])
     .addTo(this.props.mapbox)
   }
-  componentWillMount() {
-    console.log("TEST")
-  }
   componentDidMount() {
     this._setMarkers()
   }
   
   render() {
-
     return (
       <>
         {(this.props.type.toUpperCase() === "FLOODING") ?
-          <Point ref={(Point) => this.point = Point} type={Flooding}/> : null
+          <Point ref={(Point) => this.point = Point} 
+                 type={Flooding}/> : null
         }
         {(this.props.type.toUpperCase() === "WILDFIRE") ?
-          <Point ref={(Point) => this.point = Point} type={Wildfire}/> : null
+          <Point ref={(Point) => this.point = Point} 
+                 type={Wildfire}/> : null
         }
         {(this.props.type.toUpperCase() === "POWEROUT") ?
-          <Point ref={(Point) => this.point = Point} type={PowerOut}/> : null
+          <Point ref={(Point) => this.point = Point} 
+                 type={PowerOut}/> : null
         }
         {(this.props.type.toUpperCase() === "HIGHWIND") ?
-          <Point ref={(Point) => this.point = Point} type={HighWind}/> : null
+          <Point ref={(Point) => this.point = Point} 
+                 type={HighWind}/> : null
         }
       </>
     )

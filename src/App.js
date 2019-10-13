@@ -1,6 +1,7 @@
 import React from 'react'
 import './App.css';
 import Map from './components/Map'
+import Logo from './components/Logo'
 
 
 export default class App extends React.Component {
@@ -19,18 +20,14 @@ export default class App extends React.Component {
     })
   }*/
 
-  //gets called in report form. Then sets state for a map reload...
-  //state then gets passed into map via mapReload state.
-  //map calls _setMapReload after successfully reloaded
-
-
-
   render() {
     //navigator.geolocation.getCurrentPosition(this.getCoords)
     return (
-
-        <Map longitude={this.state.longitude} 
-             latitude={this.state.latitude}/>
+        <>
+          <Map longitude={this.state.longitude} 
+              latitude={this.state.latitude}/>
+          <Logo/>
+        </>
 
     )
   }

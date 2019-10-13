@@ -5,6 +5,7 @@ import Flooding from '../assets/Flooding.svg'
 import HighWind from '../assets/HighWind.svg'
 import PowerOut from '../assets/PowerOut.svg'
 import Firebase from 'firebase'
+import Marker from './Marker'
 
 
 
@@ -16,7 +17,7 @@ const Form = styled.div`
   width: 500px;
   background-color: white;
   box-shadow: 0 0.3vh 0.3vw 0 rgba(0, 0, 0, 0.4), 0 2px 2px 0 rgba(0, 0, 0, 0.4);
-  z-index: 1;
+  z-index: 100;
   border-radius: 20px;
 `
 
@@ -47,14 +48,14 @@ const Coords = styled.text`
 `
 
 const Submit = styled.div`
-  color: white;
-  background-color: #828282;
+  color: black;
+  background-color: #80dfff;
   position: absolute;
   bottom: 25px;
   right: 25px; 
   width: 230px;
   height: 50px;
-  border-radius: 20px;
+  border-radius: 15px;
   font-size: 35px;
   box-shadow: 0 0.3vh 0.3vw 0 rgba(0, 0, 0, 0.4), 0 2px 2px 0 rgba(0, 0, 0, 0.4);
 `
@@ -104,13 +105,12 @@ export default class ReportForm extends React.Component {
     this.state = {
       formType: props.type,
       latitude: this.props.latitude,
-      longitude: this.props.longitude
+      longitude: this.props.longitude,
+      submitted: false,
     }
   }
 
   render() {
-    console.log("Report Form Lat: " + this.state.latitude)
-    console.log("Report Form Long: " + this.state.longitude)
     return (
       <Form> 
         {this.state.formType === "Flooding" ? 
@@ -127,12 +127,22 @@ export default class ReportForm extends React.Component {
         : null}
         <Type>{this.state.formType.toUpperCase()}</Type>
         <Coords>{this.state.latitude.toFixed(5) + "    " + this.state.longitude.toFixed(5)}</Coords>
-        <Submit onClick={() => {this._storeData()}}>
-          <SubmitText>
-            Submit
-          </SubmitText>
-        </Submit>
-      </Form>
+        <Submit onClick={() => {
+          this._storeData()
+        }}>
+          <Marker 
+            ref = {(Marker) => this.marker = Marker}
+            key={this.props.latitude + this.props.longitude} 
+            type={this.state.formType}
+            mapbox={this.props.mapbox} 
+            lat={this.state.latitude} 
+            long={this.state.longitude}
+          /> 
+        <SubmitText>
+          Submit
+        </SubmitText>
+      </Submit>
+    </Form>
     )
   }
 }

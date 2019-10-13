@@ -8,21 +8,21 @@ const Container = styled.div`
   height: ${props => props.height}px;
   right: 50px;
   top: 50px;
-  z-index: 1;
+  z-index: 100;
   text-align: center;
 `
 
 const Report = styled.div`
   top: ${props => props.top}px;
-  color: white;
-  background-color: #828282;
+  color: black;
+  background-color: #80dfff;
   position: absolute; 
   width: 230px;
   height: 50px;
-  border-radius: 20px;
+  border-radius: 15px;
   font-size: 35px;
-  transition: all 1s;
-  z-index: 1;
+  transition: all 0.75s;
+  z-index: 6;
   box-shadow: 0 0.3vh 0.3vw 0 rgba(0, 0, 0, 0.4), 0 2px 2px 0 rgba(0, 0, 0, 0.4);
 
   :hover{
@@ -32,15 +32,16 @@ const Report = styled.div`
 
 const SubMenu = styled.div`
   top: ${props => props.top}px; 
+  opacity: ${props => props.opacity};
   color: black;
   background-color: white;
   position: absolute; 
   width: 230px;
   height: 50px;
-  border-radius: 20px;
+  border-radius: 15px;
   font-size: 35px;
-  transition: all 1s;
-  z-index: 0;
+  transition: all 0.75s;
+  z-index: ${props => props.zIndex};
   box-shadow: 0 0.3vh 0.3vw 0 rgba(0, 0, 0, 0.4), 0 2px 2px 0 rgba(0, 0, 0, 0.4);
   :hover{
     transform: scale(1.05);
@@ -49,7 +50,7 @@ const SubMenu = styled.div`
 
 const StyledText = styled.text`
   position: relative;
-  width: 230px;
+  width: 280px;
   font-size: 35px;
   margin-left: auto;
   margin-right: auto;
@@ -71,6 +72,7 @@ export default class Marker extends React.Component {
       formType: "",
       latitude: this.props.latitude,
       longitude: this.props.longitude,
+      opacity: 0,
     }
   }
   _expand = () => {
@@ -82,6 +84,7 @@ export default class Marker extends React.Component {
         WildfireTop: 0,
         PowerOutageTop: 0,
         HighWindTop: 0,
+        opacity: 0
       })
     } else {
       this.setState({
@@ -90,6 +93,7 @@ export default class Marker extends React.Component {
         WildfireTop: 126,
         PowerOutageTop: 186,
         HighWindTop: 246,
+        opacity: 1,
       })
     }
   }
@@ -103,6 +107,7 @@ export default class Marker extends React.Component {
       WildfireTop: 0,
       PowerOutageTop: 0,
       HighWindTop: 0,
+      opacity: 0,
       showForm: false,
     })
   }
@@ -118,30 +123,44 @@ export default class Marker extends React.Component {
   render() {
 
     return (
-      <Container height={this.state.height}>
+      <Container 
+        height={this.state.height}
+        opacity={this.state.opacity}>
         <Report top={0}>
           <StyledText onClick={this._expand}>REPORT</StyledText>
         </Report>
          
-        <SubMenu top={this.state.FloodingTop}>
+        <SubMenu 
+          top={this.state.FloodingTop}
+          opacity={this.state.opacity}
+          zIndex={5}>
           <StyledText onClick={() => this._showForm('Flooding')}>
             Flooding
           </StyledText>
         </SubMenu>
          
-        <SubMenu top={this.state.WildfireTop}>
+        <SubMenu 
+          top={this.state.WildfireTop}
+          opacity={this.state.opacity}
+          zIndex={4}>
           <StyledText onClick={() => this._showForm('Wildfire')}>
             Wildfire
           </StyledText>
         </SubMenu>
          
-        <SubMenu top={this.state.PowerOutageTop}>
+        <SubMenu 
+          top={this.state.PowerOutageTop}
+          opacity={this.state.opacity}
+          zIndex={3}>
           <StyledText onClick={() => this._showForm('PowerOut')}>
             Power Out
           </StyledText>
         </SubMenu>
          
-        <SubMenu top={this.state.HighWindTop}>
+        <SubMenu 
+          top={this.state.HighWindTop}
+          opacity={this.state.opacity}
+          zIndex={2}>
           <StyledText onClick={() => this._showForm('HighWind')}>
             High Wind
           </StyledText>
@@ -151,7 +170,8 @@ export default class Marker extends React.Component {
           <ReportForm type={this.state.formType}
                       latitude={this.state.latitude}
                       longitude={this.state.longitude}
-                      retract={this._retract}/> 
+                      retract={this._retract}
+                      mapbox={this.props.mapbox}/> 
         : null}
 
       </Container>
