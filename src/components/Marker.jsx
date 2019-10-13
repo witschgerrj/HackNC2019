@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from 'styled-components'
 import MapBox from 'mapbox-gl'
-import ForestFire from '../assets/ForestFire.svg'
+import Wildfire from '../assets/ForestFire.svg'
 import Flooding from '../assets/Flooding.svg'
 
 const Point = styled.div`
@@ -19,16 +19,19 @@ export default class Marker extends React.Component {
     .addTo(this.props.mapbox)
   }
 
+  componentDidMount() {
+    this._setMarkers()
+  }
   
   render() {
-    this._setMarkers()
+
     return (
       <>
         {(this.props.type.toUpperCase() === "FLOODING") ?
           <Point ref={(Point) => this.point = Point} type={Flooding}/> : null
         }
-        {(this.props.type.toUpperCase() === "FORESTFIRE") ?
-          <Point ref={(Point) => this.point = Point} type={ForestFire}/> : null
+        {(this.props.type.toUpperCase() === "WILDFIRE") ?
+          <Point ref={(Point) => this.point = Point} type={Wildfire}/> : null
         }
       </>
     )

@@ -19,7 +19,7 @@ export default class Map extends React.Component {
       zoom: 10,
       mapbox: {},
       mounted: false,
-      forestfire: [],
+      wildfire: [],
       flooding: [],
     }
   }
@@ -44,12 +44,14 @@ export default class Map extends React.Component {
     })
 
     let forestfire = []
+    //CHANGE THIS TO WILDFIRE
     db.collection("ForestFire").get().then(querySnapshot => {
       querySnapshot.forEach((doc, index) => {
         forestfire.push(doc.data())
       })
+      //CHANGE TO WILDFIRE
       this.setState({
-        forestfire: forestfire
+        wildfire: forestfire
       })
     })
 
@@ -84,9 +86,9 @@ export default class Map extends React.Component {
           )) : null
         }
         {this.state.mounted ?
-          this.state.forestfire.map((data, index) => (
+          this.state.wildfire.map((data, index) => (
               <Marker key={data.latitude + data.longitude} 
-                      type={"FORESTFIRE"}
+                      type={"WILDFIRE"}
                       mapbox={this.state.mapbox} 
                       lat={data.latitude} 
                       long={data.longitude}/>
