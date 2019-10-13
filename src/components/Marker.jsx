@@ -1,4 +1,4 @@
-import React from 'react';
+import React from 'react'
 import styled from 'styled-components'
 import MapBox from 'mapbox-gl'
 import Wildfire from '../assets/Wildfire.svg'
@@ -11,15 +11,19 @@ const Point = styled.div`
   background-repeat: no-repeat;
   height: 75px;
   width: 75px;
+  max-width: 75px;
 `
 
 export default class Marker extends React.Component {
+
   _setMarkers = () => {
     new MapBox.Marker(this.point)
     .setLngLat([this.props.long, this.props.lat])
     .addTo(this.props.mapbox)
   }
-
+  componentWillMount() {
+    console.log("TEST")
+  }
   componentDidMount() {
     this._setMarkers()
   }

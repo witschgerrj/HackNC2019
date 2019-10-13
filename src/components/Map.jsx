@@ -3,6 +3,7 @@ import Firebase from 'firebase'
 import styled from 'styled-components'
 import MapBox from 'mapbox-gl'
 import Marker from './Marker'
+import Report from './Report'
 
 const Container = styled.div`
   position: relative;
@@ -11,8 +12,10 @@ const Container = styled.div`
 `
 
 export default class Map extends React.Component {
+  
   constructor(props) {
     super(props)
+    
     this.state = {
       width: '100%',
       height: '100%',
@@ -23,11 +26,13 @@ export default class Map extends React.Component {
       flooding: [],
       powerout: [],
       highwind: [],
+      newData: false,
     }
   }
 
-  componentWillMount() {
-    Firebase.initializeApp({
+
+  _updateData = () => {
+      Firebase.initializeApp({
       apiKey: process.env.REACT_APP_FIREBASE_KEY,
       authDomain: 'hacknc-dffd4.firebaseapp.com',
       projectId: 'hacknc-dffd4'
@@ -78,15 +83,17 @@ export default class Map extends React.Component {
         highwind: highwind
       })
     })
-
   }
 
+
   componentDidMount() {
+    this._updateData()
+    console.log("FLOOD: " + this.state.flooding)
     MapBox.accessToken = process.env.REACT_APP_MAPBOX_TOKEN
     let map = new MapBox.Map({
       container: this.container,
       style: 'mapbox://styles/mapbox/streets-v11',
-      //       long,     lat
+      //       long,                 lat
       center: [this.props.longitude, this.props.latitude],
       zoom: 12,
     })
@@ -95,13 +102,15 @@ export default class Map extends React.Component {
       mounted: true,
     })
   }
-
-
+  
   render() {
-    console.log("Map Lat: " + this.props.latitude)
-    console.log("Map Long: " + this.props.longitude)
     return (
+      <>
+      <Report latitude={this.props.latitude} 
+              longitude={this.props.longitude}
+              newData/>
       <Container ref={(Container) => this.container = Container}>
+        
         {this.state.mounted ?
           this.state.flooding.map((data, index) => (
               <Marker key={data.latitude + data.longitude} 
@@ -139,6 +148,7 @@ export default class Map extends React.Component {
           )) : null
           }
       </Container>
+      </>
     )
   }
 }

@@ -1,4 +1,4 @@
-import React from 'react';
+import React from 'react'
 import styled from 'styled-components'
 import Wildfire from '../assets/Wildfire.svg'
 import Flooding from '../assets/Flooding.svg'

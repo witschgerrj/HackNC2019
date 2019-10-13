@@ -1,41 +1,37 @@
 import React from 'react'
 import './App.css';
 import Map from './components/Map'
-import styled from 'styled-components'
-import Report from './components/Report'
 
-const Container = styled.div`
-  position: relative;
-  width: 100%;
-  height: 100%;
-  `
 
 export default class App extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
       longitude: -79.0558 - (Math.random() / 10), 
-      latitude: 35.9132 + (Math.random() / 10) 
+      latitude: 35.9132 + (Math.random() / 10),
     }
   }
 
-  getCoords = (position) => {
+  /*getCoords = (position) => {
     this.setState({
       latitude: position.coords.latitude,
-      longitude: position.coords.longitude
+      longitude: position.coords.longitude,
     })
-  }
+  }*/
+
+  //gets called in report form. Then sets state for a map reload...
+  //state then gets passed into map via mapReload state.
+  //map calls _setMapReload after successfully reloaded
+
+
 
   render() {
-    navigator.geolocation.getCurrentPosition(this.getCoords)
+    //navigator.geolocation.getCurrentPosition(this.getCoords)
     return (
-      <> 
-        <Report latitude={this.state.latitude} 
-                longitude={this.state.longitude}/>
+
         <Map longitude={this.state.longitude} 
-             latitude={this.state.latitude}>
-        </Map>
-      </>
+             latitude={this.state.latitude}/>
+
     )
   }
 }
