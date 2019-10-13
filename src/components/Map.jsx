@@ -21,6 +21,8 @@ export default class Map extends React.Component {
       mounted: false,
       wildfire: [],
       flooding: [],
+      powerout: [],
+      highwind: [],
     }
   }
 
@@ -29,11 +31,15 @@ export default class Map extends React.Component {
       apiKey: process.env.REACT_APP_FIREBASE_KEY,
       authDomain: 'hacknc-dffd4.firebaseapp.com',
       projectId: 'hacknc-dffd4'
-    });
+    })
     
-    let db = Firebase.firestore();
+    let db = Firebase.firestore()
 
     let flooding = []
+    let wildfire = []
+    let powerout = []
+    let highwind = []
+ 
     db.collection("Flooding").get().then(querySnapshot => {
       querySnapshot.forEach((doc, index) => {
         flooding.push(doc.data())   
@@ -43,15 +49,33 @@ export default class Map extends React.Component {
       })
     })
 
-    let forestfire = []
-    //CHANGE THIS TO WILDFIRE
-    db.collection("ForestFire").get().then(querySnapshot => {
+
+    db.collection("Wildfire").get().then(querySnapshot => {
       querySnapshot.forEach((doc, index) => {
-        forestfire.push(doc.data())
+        wildfire.push(doc.data())
       })
-      //CHANGE TO WILDFIRE
       this.setState({
-        wildfire: forestfire
+        wildfire: wildfire
+      })
+    })
+
+
+    db.collection("PowerOut").get().then(querySnapshot => {
+      querySnapshot.forEach((doc, index) => {
+        powerout.push(doc.data())
+      })
+      this.setState({
+        powerout: powerout
+      })
+    })
+
+
+    db.collection("HighWind").get().then(querySnapshot => {
+      querySnapshot.forEach((doc, index) => {
+        highwind.push(doc.data())
+      })
+      this.setState({
+        highwind: highwind
       })
     })
 
@@ -74,6 +98,8 @@ export default class Map extends React.Component {
 
 
   render() {
+    console.log("Map Lat: " + this.props.latitude)
+    console.log("Map Long: " + this.props.longitude)
     return (
       <Container ref={(Container) => this.container = Container}>
         {this.state.mounted ?
@@ -89,6 +115,24 @@ export default class Map extends React.Component {
           this.state.wildfire.map((data, index) => (
               <Marker key={data.latitude + data.longitude} 
                       type={"WILDFIRE"}
+                      mapbox={this.state.mapbox} 
+                      lat={data.latitude} 
+                      long={data.longitude}/>
+          )) : null
+          }
+          {this.state.mounted ?
+          this.state.powerout.map((data, index) => (
+              <Marker key={data.latitude + data.longitude} 
+                      type={"POWEROUT"}
+                      mapbox={this.state.mapbox} 
+                      lat={data.latitude} 
+                      long={data.longitude}/>
+          )) : null
+          }
+          {this.state.mounted ?
+          this.state.highwind.map((data, index) => (
+              <Marker key={data.latitude + data.longitude} 
+                      type={"HIGHWIND"}
                       mapbox={this.state.mapbox} 
                       lat={data.latitude} 
                       long={data.longitude}/>

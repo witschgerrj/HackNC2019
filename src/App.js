@@ -1,4 +1,5 @@
 import React from 'react'
+import './App.css';
 import Map from './components/Map'
 import styled from 'styled-components'
 import Report from './components/Report'
@@ -12,9 +13,9 @@ const Container = styled.div`
 export default class App extends React.Component {
   constructor(props) {
     super(props)
-    this.state={
+    this.state = {
       longitude: -79.0558 - (Math.random() / 10), 
-      latitude: 35.9132 + (Math.random() / 10)
+      latitude: 35.9132 + (Math.random() / 10) 
     }
   }
 
@@ -32,7 +33,7 @@ export default class App extends React.Component {
         <Report latitude={this.state.latitude} 
                 longitude={this.state.longitude}/>
         <Map longitude={this.state.longitude} 
-              latitude={this.state.latitude}>
+             latitude={this.state.latitude}>
         </Map>
       </>
     )

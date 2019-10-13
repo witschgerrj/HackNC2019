@@ -1,15 +1,16 @@
 import React from 'react';
 import styled from 'styled-components'
 import MapBox from 'mapbox-gl'
-import Wildfire from '../assets/ForestFire.svg'
+import Wildfire from '../assets/Wildfire.svg'
 import Flooding from '../assets/Flooding.svg'
+import HighWind from '../assets/HighWind.svg'
+import PowerOut from '../assets/PowerOut.svg'
 
 const Point = styled.div`
   background-image: url(${props => props.type});
   background-repeat: no-repeat;
-  background-size: cover;
-  height: 60px;
-  width: 70px;
+  height: 75px;
+  width: 75px;
 `
 
 export default class Marker extends React.Component {
@@ -32,6 +33,12 @@ export default class Marker extends React.Component {
         }
         {(this.props.type.toUpperCase() === "WILDFIRE") ?
           <Point ref={(Point) => this.point = Point} type={Wildfire}/> : null
+        }
+        {(this.props.type.toUpperCase() === "POWEROUT") ?
+          <Point ref={(Point) => this.point = Point} type={PowerOut}/> : null
+        }
+        {(this.props.type.toUpperCase() === "HIGHWIND") ?
+          <Point ref={(Point) => this.point = Point} type={HighWind}/> : null
         }
       </>
     )

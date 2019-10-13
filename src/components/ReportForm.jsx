@@ -1,9 +1,12 @@
 import React from 'react';
 import styled from 'styled-components'
-import Wildfire from '../assets/ForestFire.svg'
+import Wildfire from '../assets/Wildfire.svg'
 import Flooding from '../assets/Flooding.svg'
-import HighWind from '../assets/ForestFire.svg'
-import PowerOut from '../assets/Flooding.svg'
+import HighWind from '../assets/HighWind.svg'
+import PowerOut from '../assets/PowerOut.svg'
+import Firebase from 'firebase'
+
+
 
 const Form = styled.div`
   position: fixed;
@@ -21,24 +24,23 @@ const Point = styled.div`
   position: absolute;
   background-image: url(${props => props.type});
   background-repeat: no-repeat;
-  background-size: cover;
-  height: 60px;
+  height: 80px;
   width: 70px;
-  left: 50px;
+  left: 40px;
   top: 50px;
 `
 
 const Type = styled.text`
   position: absolute;
   left: 140px;
-  top: 50px;
+  top: 42px;
   font-size: 60px;
 `
 
 const Coords = styled.text`
   position: absolute;
   width: 200px;
-  left: 150px;
+  left: 140px;
   top: 120px;
   font-size: 20px;
   white-space: pre;
@@ -57,18 +59,58 @@ const Submit = styled.div`
   box-shadow: 0 0.3vh 0.3vw 0 rgba(0, 0, 0, 0.4), 0 2px 2px 0 rgba(0, 0, 0, 0.4);
 `
 
+const SubmitText = styled.text`
+  position: absolute;
+  bottom: 4px;
+  right: 64px; 
+`
+
 export default class ReportForm extends React.Component {
+  
   _storeData = () => {
-    console.log('submitted')
+    let db = Firebase.firestore()
+    if (this.state.formType === "Flooding") {
+      db.collection('Flooding').doc().set({
+        latitude: this.state.latitude,
+        longitude: this.state.longitude,
+        reported_by: "Anonymous"
+      })
+    } else if (this.state.formType === "Wildfire") {
+      db.collection('Wildfire').doc().set({
+        latitude: this.state.latitude,
+        longitude: this.state.longitude,
+        reported_by: "Anonymous"
+      })
+    } else if (this.state.formType === "PowerOut") {
+      db.collection('PowerOut').doc().set({
+        latitude: this.state.latitude,
+        longitude: this.state.longitude,
+        reported_by: "Anonymous"
+      })
+    } else if (this.state.formType === "HighWind") {
+      db.collection('HighWind').doc().set({
+        latitude: this.state.latitude,
+        longitude: this.state.longitude,
+        reported_by: "Anonymous"
+      })
+    } else {
+      //do nothing for now
+    }
+    this.props.retract()
   }
 
   constructor(props) {
     super(props) 
     this.state = {
-      formType: props.type
+      formType: props.type,
+      latitude: this.props.latitude,
+      longitude: this.props.longitude
     }
   }
+
   render() {
+    console.log("Report Form Lat: " + this.state.latitude)
+    console.log("Report Form Long: " + this.state.longitude)
     return (
       <Form> 
         {this.state.formType === "Flooding" ? 
@@ -77,15 +119,19 @@ export default class ReportForm extends React.Component {
         {this.state.formType === "Wildfire" ? 
           <Point type={Wildfire}/> 
         : null}
-        {this.state.formType === "PowerOutage" ? 
+        {this.state.formType === "PowerOut" ? 
           <Point type={PowerOut}/> 
         : null}
         {this.state.formType === "HighWind" ? 
           <Point type={HighWind}/> 
         : null}
         <Type>{this.state.formType.toUpperCase()}</Type>
-        <Coords>{this.props.latitude + "    " + this.props.longitude}</Coords>
-        <Submit onClick={() => {this._storeData()}}>Submit</Submit>
+        <Coords>{this.state.latitude.toFixed(5) + "    " + this.state.longitude.toFixed(5)}</Coords>
+        <Submit onClick={() => {this._storeData()}}>
+          <SubmitText>
+            Submit
+          </SubmitText>
+        </Submit>
       </Form>
     )
   }
