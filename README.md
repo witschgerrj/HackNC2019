@@ -1,3 +1,5 @@
+SWRV (Swerve) is an app that uses crowd sourcing to report environemental hazards and threats such as flooding, wildfires, and high winds. By being able to crowd source reports, the community will be aware of possibly life threatening issues quicker than ever. 
+
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
 ## Available Scripts
